@@ -1,6 +1,14 @@
-const http = require('http')
-const fs = require('fs')
+const express = require('express')
 
-const server = http.createServer((req, res) => {})
+const app = express()
 
-server.listen(8080)
+app.use((req, res, next) => {
+	res.status(350).json({
+		status: 2,
+		data: {
+			title: 'asdsa'
+		}
+	})
+})
+
+app.listen(8080)
