@@ -3,8 +3,10 @@ const path = require('path')
 const express = require('express')
 const handlebars = require('express-handlebars')
 const sassMiddleware = require('node-sass-middleware')
+const bodyParser = require('body-parser')
 
 const routerShop = require('./routes/shop')
+const routerAdmin = require('./routes/admin')
 
 const app = express()
 
@@ -17,6 +19,8 @@ app.engine(
 		partialsDir: 'views/includes'
 	})
 )
+app.set('view engine', 'hbs')
+app.set('views', 'views')
 
 // sass
 app.use(
@@ -31,11 +35,12 @@ app.use(
 	})
 )
 
-app.set('view engine', 'hbs')
-app.set('views', 'views')
 app.use(express.static('public'))
 
+app.use(bodyParser.urlencoded({ extended: true }))
+
 app.use(routerShop)
+app.use(routerAdmin)
 
 app.use((req, res, next) => {
 	// 404
@@ -48,7 +53,7 @@ app.use((err, req, res, next) => {
 	res.status(500).send('Error appeared!' + '\n' + err.message)
 })
 
-// stargin app
+// init app
 const PORT = 8080
 app.listen(PORT)
 console.log(`Server started on http://localhost:${PORT}`)

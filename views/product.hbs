@@ -3,8 +3,11 @@
         <img src="{{product.imgUrl}}" alt="image of {{product.title}}">
     </div>
     <div class="full-info">
-        <div class="title">{{product.title}}</div>
+        <div class="title">{{cproduct.title}}</div>
         <div class="price">{{product.price}}</div>
         <div class="description">{{product.desc}}</div>
+        <div>
+            <a href="/admin/item/{{product.id}}">Edit</a>
+        </div>
     </div>
 </div>

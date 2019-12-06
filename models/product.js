@@ -16,6 +16,13 @@ class Product {
 	static getAllItems() {
 		return products
 	}
+
+	static editItem(id, title, price, desc) {
+		const prod = Product.getItemById(id)
+		prod.title = title
+		prod.price = price
+		prod.desc = desc
+	}
 }
 
 module.exports = Product

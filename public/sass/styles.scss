@@ -131,3 +131,48 @@ img {
 		margin-top: 30px;
 	}
 }
+
+// admin edit form
+.adminEditForm {
+	max-width: 300px;
+	margin: auto;
+
+	.row {
+		margin: 15px;
+
+		display: flex;
+		justify-content: center;
+
+		input {
+			width: 100%;
+			box-sizing: border-box;
+		}
+
+		textarea {
+			width: 100%;
+			min-height: 150px;
+			resize: vertical;
+		}
+
+		input,
+		textarea {
+			box-shadow: 10px 10px 20px 0px gray;
+			padding: 10px;
+			font-size: 14px;
+		}
+
+		button {
+			border: 1px solid black;
+			border-radius: 5px;
+			padding: 5px 20px;
+			background-color: lightgray;
+			transition: background-color 0.3s linear;
+
+			&:hover {
+				cursor: pointer;
+				background-color: gray;
+				transition: background-color 0.3s linear;
+			}
+		}
+	}
+}
