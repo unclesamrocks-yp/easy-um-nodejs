@@ -1,5 +1,8 @@
+const path = require('path')
+
 const express = require('express')
 const handlebars = require('express-handlebars')
+const sassMiddleware = require('node-sass-middleware')
 
 const routerShop = require('./routes/shop')
 
@@ -14,6 +17,20 @@ app.engine(
 		partialsDir: 'views/includes'
 	})
 )
+
+// sass
+app.use(
+	sassMiddleware({
+		src: path.join(__dirname, 'public', 'sass'),
+		dest: path.join(__dirname, 'public', 'css'),
+		debug: false,
+		outputStyle: 'compressed',
+		response: false,
+		error: err => console.log('[sassMiddleware][error]', err, '\n[sassMiddleware][file]', err.file, '\n[sassMiddleware][line]', err.line),
+		prefix: '/css'
+	})
+)
+
 app.set('view engine', 'hbs')
 app.set('views', 'views')
 app.use(express.static('public'))
