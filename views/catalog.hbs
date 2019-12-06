@@ -1,14 +1,5 @@
 <div class="catalog">
     {{#each itemList}}
-        <div class="item">
-            <div class="title">{{this.title}}</div>
-            <div class="img-block">
-                <img src="{{this.imgUrl}}" alt="image of {{this.title}}">
-            </div>
-            <div class="info-block">
-                <div class="price">{{this.price}}</div>
-                <a href="/{{this.id}}" class="details">Details</a>
-            </div>
-        </div>
+    {{>shopItem this}}
     {{/each}}
 </div>
