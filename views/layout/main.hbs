@@ -1,22 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Node.js Application</title>
-    <link rel="stylesheet" href="/css/styles.css">
-    {{#if catalogCSS}}
-    <link rel="stylesheet" href="/css/catalog.css">
-    {{/if}}
+    <title>Node.js App</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-
 <body>
-    {{!-- NAVBAR --}}
-    {{> nav}}
-    {{!-- HTML BODY --}}
-    {{{ body }}}
+    {{>header}}
+    <div class="wrap">
+        {{{body}}}
+    </div>
+    {{>footer}}
 </body>
-
 </html>
