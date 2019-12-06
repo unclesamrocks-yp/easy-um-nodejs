@@ -45,7 +45,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
 	// errors
 	console.log('[app][error]', err)
-	res.status(500).send('Error appeared!')
+	res.status(500).send('Error appeared!' + '\n' + err.message)
 })
 
 // stargin app
