@@ -43,14 +43,11 @@ app.use(routerShop)
 app.use(routerAdmin)
 
 app.use((req, res, next) => {
-	// 404
-	res.status(404).send('<h1>Sorry, 404 - Not Found</h1>')
+	res.status(404).render('nopage')
 })
 
 app.use((err, req, res, next) => {
-	// errors
-	console.log('[app][error]', err)
-	res.status(500).send('Error appeared!' + '\n' + err.message)
+	res.status(500).render('nopage', {error: true})
 })
 
 // init app
