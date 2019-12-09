@@ -2,7 +2,7 @@ const Product = require('../models/product')
 
 exports.getIndex = (req, res, next) => {
 	try {
-		res.status(200).render('index')
+		res.status(200).render('index', {index: true})
 	} catch (error) {
 		next(error)
 	}
@@ -12,7 +12,8 @@ exports.getCatalog = (req, res, next) => {
 	try {
 		const products = Product.getAllItems()
 		res.status(200).render('catalog', {
-			itemList: products
+			itemList: products,
+			catalog: true
 		})
 	} catch (error) {
 		next(error)

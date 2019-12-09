@@ -1,10 +1,10 @@
 <nav>
     <div class="NavList">
         <div class="NavList__item">
-            <a href="/">Home</a>
+            <a href="/" {{#if index}}class="active"{{/if}}>Home</a>
         </div>
         <div class="NavList__item">
-            <a href="/catalog">Catalog</a>
+            <a href="/catalog" {{#if catalog}}class="active"{{/if}}>Catalog</a>
         </div>
     </div>
 </nav>

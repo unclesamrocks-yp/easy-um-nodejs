@@ -79,6 +79,9 @@ img {
 .NavList__item {
 	display: inline-block;
 	margin-left: 30px;
+	.active {
+		color: red;
+	}
 }
 
 /*CATALOG PAGE*/

@@ -39,6 +39,11 @@ app.use(express.static('public'))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.use((req, res, next) => {
+	let page_name = req.url
+	next()
+})
+
 app.use(routerShop)
 app.use(routerAdmin)
 
