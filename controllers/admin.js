@@ -23,10 +23,23 @@ exports.postEditItem = (req, res, next) => {
 	}
 }
 
+exports.adminCatalog = (req, res, next) => {
+	try {
+		const products = Product.getAllItems()
+		res.status(200).render('catalog', {
+			itemList: products,
+			admin_catalog: true
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
 exports.addNewItem = (req, res, next) => {
 	try {
 		res.status(200).render('admin/product', {
-			isAdmin: true
+			isAdmin: true,
+			add_item: true
 		})
 	} catch (error) {
 		next(error)

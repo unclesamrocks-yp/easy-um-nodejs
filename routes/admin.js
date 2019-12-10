@@ -8,6 +8,8 @@ router.get('/admin/item/:id', controllerAdmin.getEditItem)
 
 router.post('/admin/editItem/:id', controllerAdmin.postEditItem)
 
+router.get('/admin/catalog', controllerAdmin.adminCatalog)
+
 router.get('/admin/new', controllerAdmin.addNewItem)
 
 router.post('/admin/addItem', controllerAdmin.postItem)

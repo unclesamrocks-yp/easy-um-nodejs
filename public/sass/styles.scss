@@ -47,6 +47,20 @@ img {
 	}
 }
 
+.update-block {
+	display: flex;
+	justify-content: space-around;
+	margin-top: 30px;
+
+	.update-link {
+		font-size: 24px;
+		font-weight: bold;
+		&:hover {
+			color: red;
+		}
+	}
+}
+
 /*HEADER AND FOOTER*/
 
 .sides {
@@ -81,6 +95,9 @@ img {
 	margin-left: 30px;
 	.active {
 		color: red;
+	}
+	.admin-nav {
+		font-weight: bold;
 	}
 }
 
@@ -196,4 +213,11 @@ img {
 		font-weight: bold;
 		margin-bottom: 20px;
 	}
+}
+
+
+.delete-warning {
+	text-align: center;
+	font-size: 30px;
+	font-weight: bold;
 }

@@ -6,5 +6,11 @@
         <div class="NavList__item">
             <a href="/catalog" {{#if catalog}}class="active"{{/if}}>Catalog</a>
         </div>
+        <div class="NavList__item">
+            <a href="/admin/catalog" class="admin-nav{{#if admin_catalog}} active{{/if}}">Admin Catalog</a>
+        </div>
+        <div class="NavList__item">
+            <a href="/admin/new" class="admin-nav{{#if add_item}} active{{/if}}">Add Product</a>
+        </div>
     </div>
 </nav>
