@@ -17,11 +17,21 @@ class Product {
 		return products
 	}
 
-	static editItem(id, title, price, desc) {
+	static editItem(id, title, imgUrl, price, desc) {
 		const prod = Product.getItemById(id)
 		prod.title = title
+		prod.imgUrl = imgUrl
 		prod.price = price
 		prod.desc = desc
+	}
+
+	static addItem(data) {
+		products.push(data)
+	}
+
+	static deleteItem(id) {
+		const index = products.findIndex(el => el.id == id)
+		products.splice(index, 1)
 	}
 }
 
