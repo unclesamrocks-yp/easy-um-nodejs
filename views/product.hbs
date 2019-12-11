@@ -7,8 +7,10 @@
         <div class="price">{{product.price}}</div>
         <div class="description">{{product.desc}}</div>
         <div class="update-block">
-            <a href="/admin/item/{{product.id}}" class="update-link">Edit</a>
+            {{#if isAdmin}}
+            <a href="/admin/editItem/{{product.id}}" class="update-link">Edit</a>
             <a href="/admin/delete/{{product.id}}" class="update-link">Delete</a>
+            {{/if}}
         </div>
     </div>
 </div>

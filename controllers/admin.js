@@ -1,5 +1,18 @@
 const Product = require('../models/product')
 
+exports.getItem = (req, res, next) => {
+	try {
+		const id = req.params.id
+		const product = Product.getItemById(id)
+		res.status(200).render('product', {
+			isAdmin: true,
+			product: product
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
 exports.getEditItem = (req, res, next) => {
 	try {
 		const id = req.params.id
@@ -28,6 +41,7 @@ exports.adminCatalog = (req, res, next) => {
 		const products = Product.getAllItems()
 		res.status(200).render('catalog', {
 			itemList: products,
+			isAdmin: true,
 			admin_catalog: true
 		})
 	} catch (error) {
@@ -35,7 +49,7 @@ exports.adminCatalog = (req, res, next) => {
 	}
 }
 
-exports.addNewItem = (req, res, next) => {
+exports.getAddNewItem = (req, res, next) => {
 	try {
 		res.status(200).render('admin/product', {
 			isAdmin: true,
@@ -46,22 +60,17 @@ exports.addNewItem = (req, res, next) => {
 	}
 }
 
-exports.postItem = (req, res, next) => {
+exports.postAddNewItem = (req, res, next) => {
 	try {
-		let maxId = 0
-		Product.getAllItems().forEach((el) => {
-			if (el.id > maxId) maxId = el.id
-		})
-		const id = ++maxId
-		req.body.id = id
-		Product.addItem(req.body)
+		const { title, imgUrl, price, desc } = req.body
+		Product.addItem(title, imgUrl, price, desc)
 		res.redirect('/catalog')
 	} catch (error) {
 		next(error)
 	}
 }
 
-exports.deleteItem = (req, res, next) => {
+exports.postDeleteItem = (req, res, next) => {
 	try {
 		const id = req.params.id
 		const product = Product.getItemById(id)

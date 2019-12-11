@@ -1,5 +1,9 @@
 <div class="catalog">
     {{#each itemList}}
+    {{#if ../isAdmin}}
+    {{>shopItemAdmin this}}
+    {{else}}
     {{>shopItem this}}
+    {{/if}}
     {{/each}}
 </div>

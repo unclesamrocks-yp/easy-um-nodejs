@@ -5,8 +5,7 @@ const handlebars = require('express-handlebars')
 const sassMiddleware = require('node-sass-middleware')
 const bodyParser = require('body-parser')
 
-const routerShop = require('./routes/shop')
-const routerAdmin = require('./routes/admin')
+const rootRouter = require('./routes/root')
 
 const app = express()
 
@@ -39,21 +38,7 @@ app.use(express.static('public'))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use((req, res, next) => {
-	let page_name = req.url
-	next()
-})
-
-app.use(routerShop)
-app.use(routerAdmin)
-
-app.use((req, res, next) => {
-	res.status(404).render('nopage')
-})
-
-app.use((err, req, res, next) => {
-	res.status(500).render('nopage', {error: true})
-})
+app.use(rootRouter) // root router logic here
 
 // init app
 const PORT = 8080
