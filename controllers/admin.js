@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator')
+
 const Product = require('../models/product')
 
 exports.getItem = (req, res, next) => {
@@ -62,9 +64,24 @@ exports.getAddNewItem = (req, res, next) => {
 
 exports.postAddNewItem = (req, res, next) => {
 	try {
-		const { title, imgUrl, price, desc } = req.body
-		Product.addItem(title, imgUrl, price, desc)
-		res.redirect('/catalog')
+		const validation = validationResult(req)
+		if (validation.errors.length > 0) {
+			// errors
+			res.status(200).render('admin/product', {
+				isAdmin: true,
+				add_item: true,
+				isError: true,
+				isInvalidTitle: validation.errors.findIndex(err => err.param === 'title') === -1 ? false : true,
+				isInvalidImgUrl: validation.errors.findIndex(err => err.param === 'imgUrl') === -1 ? false : true,
+				isInvalidPrice: validation.errors.findIndex(err => err.param === 'price') === -1 ? false : true,
+				isInvalidDesc: validation.errors.findIndex(err => err.param === 'desc') === -1 ? false : true
+			})
+		} else {
+			// no errors
+			const { title, imgUrl, price, desc } = req.body
+			Product.addItem(title, imgUrl, price, desc)
+			res.redirect('/catalog')
+		}
 	} catch (error) {
 		next(error)
 	}

@@ -1,19 +1,23 @@
 <div class="product clearfix">
-    <form class="adminEditForm" action="/admin/{{#if product}}editItem/{{product.id}}{{else}}addItem/{{/if}}" method="POST">
+    <form class="adminEditForm" action="/admin/{{#if product}}editItem/{{product.id}}{{else}}addItem/{{/if}}"
+        method="POST">
         <div class="row">
             <h2>{{product.title}}</h2>
+            {{#if isError}}
+            <p class="errorMsgBox">Пожалуйста, проверьте правильность заполнения полей!</p>
+            {{/if}}
         </div>
         {{#if product}}<input type="hidden" name="id" value="{{product.id}}">{{/if}}
-        <div class="row">
+        <div class="row{{#if isInvalidTitle}} invalid{{/if}}">
             <input type="text" name="title" value="{{product.title}}" placeholder="Title">
         </div>
-        <div class="row">
+        <div class="row{{#if isInvalidImgUrl}} invalid{{/if}}">
             <input type="text" name="imgUrl" value="{{product.imgUrl}}" placeholder="Image Url">
         </div>
-        <div class="row">
+        <div class="row{{#if isInvalidPrice}} invalid{{/if}}">
             <input type="text" name="price" value="{{product.price}}" placeholder="Price">
         </div>
-        <div class="row">
+        <div class="row{{#if isInvalidDesc}} invalid{{/if}}">
             <textarea name="desc" placeholder="Description">{{product.desc}}</textarea>
         </div>
         <div class="row">
@@ -21,3 +25,7 @@
         </div>
     </form>
 </div>
+
+<script>
+    console.log('form loaded!')
+</script>

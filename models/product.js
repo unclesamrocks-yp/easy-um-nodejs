@@ -36,7 +36,6 @@ class Product {
 			desc: desc
 		}
 		products.push(newProd)
-		console.log(newProd)
 	}
 
 	deleteItem(id) {

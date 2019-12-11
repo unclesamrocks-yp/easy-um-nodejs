@@ -1,4 +1,5 @@
 const express = require('express')
+const { body } = require('express-validator')
 
 const router = express.Router()
 
@@ -14,7 +15,17 @@ router.get('/admin/catalog', controllerAdmin.adminCatalog)
 
 router.get('/admin/new', controllerAdmin.getAddNewItem)
 
-router.post('/admin/addItem', controllerAdmin.postAddNewItem)
+router.post(
+	'/admin/addItem',
+	[
+		body(['title', 'desc'])
+			.trim()
+			.isLength({ min: 5 }),
+		body('price').isInt({ gt: 0 }),
+		body('imgUrl').isURL()
+	],
+	controllerAdmin.postAddNewItem
+)
 
 router.get('/admin/delete/:id', controllerAdmin.postDeleteItem)
 
