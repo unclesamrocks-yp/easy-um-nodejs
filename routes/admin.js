@@ -9,7 +9,15 @@ router.get('/admin/item/:id', controllerAdmin.getItem)
 
 router.get('/admin/editItem/:id', controllerAdmin.getEditItem)
 
-router.post('/admin/editItem/:id', controllerAdmin.postEditItem)
+router.post('/admin/editItem/:id',
+	[
+		body(['title', 'desc'])
+			.trim()
+			.isLength({ min: 5 }),
+		body('price').isInt({ gt: 0 }),
+		body('imgUrl').isURL()
+	],
+	controllerAdmin.postEditItem)
 
 router.get('/admin/catalog', controllerAdmin.adminCatalog)
 

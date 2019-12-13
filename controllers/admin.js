@@ -6,10 +6,12 @@ exports.getItem = (req, res, next) => {
 	try {
 		const id = req.params.id
 		const product = Product.getItemById(id)
-		res.status(200).render('product', {
-			isAdmin: true,
-			product: product
-		})
+		if (product) {
+			res.status(200).render('product', {
+				isAdmin: true,
+				product: product
+			})
+		} else next(error)
 	} catch (error) {
 		next(error)
 	}
@@ -19,10 +21,12 @@ exports.getEditItem = (req, res, next) => {
 	try {
 		const id = req.params.id
 		const product = Product.getItemById(id)
-		res.status(200).render('admin/product', {
-			isAdmin: true,
-			product: product
-		})
+		if (product) {
+			res.status(200).render('admin/product', {
+				isAdmin: true,
+				product: product
+			})
+		} else next(error)
 	} catch (error) {
 		next(error)
 	}
@@ -30,9 +34,25 @@ exports.getEditItem = (req, res, next) => {
 
 exports.postEditItem = (req, res, next) => {
 	try {
-		const { id, title, imgUrl, price, desc } = req.body
-		Product.editItem(id, title, imgUrl, price, desc)
-		res.redirect('/catalog')
+		const validation = validationResult(req)
+		if (validation.errors.length > 0) {
+			const errorObj = validation.errors.reduce(function (prev, curr) {
+				const prop = curr.param
+				prev[prop] = true
+				return prev
+			}, {})
+			res.status(200).render('admin/product', {
+				isAdmin: true,
+				add_item: true,
+				isError: true,
+				product: req.body,
+				isInvalid: errorObj
+			})
+		} else {
+			const { id, title, imgUrl, price, desc } = req.body
+			Product.editItem(id, title, imgUrl, price, desc)
+			res.redirect('/admin/catalog')
+		}
 	} catch (error) {
 		next(error)
 	}
@@ -66,21 +86,24 @@ exports.postAddNewItem = (req, res, next) => {
 	try {
 		const validation = validationResult(req)
 		if (validation.errors.length > 0) {
+			const errorObj = validation.errors.reduce(function (prev, curr) {
+				const prop = curr.param
+				prev[prop] = true
+				return prev
+			}, {})
 			// errors
 			res.status(200).render('admin/product', {
 				isAdmin: true,
 				add_item: true,
 				isError: true,
-				isInvalidTitle: validation.errors.findIndex(err => err.param === 'title') === -1 ? false : true,
-				isInvalidImgUrl: validation.errors.findIndex(err => err.param === 'imgUrl') === -1 ? false : true,
-				isInvalidPrice: validation.errors.findIndex(err => err.param === 'price') === -1 ? false : true,
-				isInvalidDesc: validation.errors.findIndex(err => err.param === 'desc') === -1 ? false : true
+				product: req.body,
+				isInvalid: errorObj
 			})
 		} else {
 			// no errors
 			const { title, imgUrl, price, desc } = req.body
 			Product.addItem(title, imgUrl, price, desc)
-			res.redirect('/catalog')
+			res.redirect('/admin/catalog')
 		}
 	} catch (error) {
 		next(error)
@@ -91,10 +114,12 @@ exports.postDeleteItem = (req, res, next) => {
 	try {
 		const id = req.params.id
 		const product = Product.getItemById(id)
-		res.status(200).render('admin/delete', {
-			isAdmin: true,
-			product: product
-		})
+		if (product) {
+			res.status(200).render('admin/delete', {
+				isAdmin: true,
+				product: product
+			})
+		} else next(error)
 	} catch (error) {
 		next(error)
 	}

@@ -50,10 +50,10 @@ img {
 .update-block {
 	display: flex;
 	justify-content: space-around;
-	margin-top: 30px;
+	margin-top: 10px;
 
 	.update-link {
-		font-size: 24px;
+		font-size: 1.3rem;
 		font-weight: bold;
 		&:hover {
 			color: red;
@@ -156,6 +156,11 @@ img {
 	.description {
 		margin-top: 30px;
 	}
+}
+
+.invalid {
+	border-width: 2px;
+	border-color: rgba(255, 0, 0, .5);
 }
 
 // admin edit form
