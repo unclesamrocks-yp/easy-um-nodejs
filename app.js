@@ -6,8 +6,11 @@ const sassMiddleware = require('node-sass-middleware')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const csurf = require('csurf')
+const mongoose = require('mongoose')
 
 const rootRouter = require('./routes/root')
+
+const { mongoURI } = require('./util/mongodb')
 
 const app = express()
 const csrfProtection = csurf({ cookie: true })
@@ -73,6 +76,17 @@ app.use((err, req, res, next) => {
 /*==============================================
 				Init App
 ===============================================*/
-const PORT = 8080
-app.listen(PORT)
-console.log(`Server started on http://localhost:${PORT}`)
+const startApp = async () => {
+	try {
+		await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+		const PORT = 8080
+		app.listen(PORT)
+		console.log(`Server started on http://localhost:${PORT}`)
+	} catch (error) {
+		console.log('[App][Error]')
+		console.log(error)
+		process.exit(404)
+	}
+}
+
+startApp()

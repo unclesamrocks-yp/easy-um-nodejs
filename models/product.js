@@ -1,47 +1,15 @@
-const { products } = require('../util/products')
+const mongoose = require('mongoose')
 
-class Product {
-	constructor() {
-		this.id = products.reduce((accumulator, curr) => {
-			if (accumulator < curr.id) return curr.id
-			else return accumulator
-		}, 0)
-	}
+const Schema = mongoose.Schema
 
-	getItemById(id) {
-		return products.find(prod => prod.id.toString() === id)
-	}
+const productShema = new Schema(
+	{
+		title: { type: String, required: true, minlength: 5 },
+		imgUrl: { type: String, required: true },
+		price: { type: Number, min: 0, required: true },
+		desc: { type: String, required: true }
+	},
+	{ timestamps: true }
+)
 
-	getAllItems() {
-		return products
-	}
-
-	editItem(id, title, imgUrl, price, desc) {
-		const prod = products.find(prod => prod.id.toString() === id)
-		prod.title = title
-		prod.imgUrl = imgUrl
-		prod.price = price
-		prod.desc = desc
-		// const prodIndex = products.findIndex(item=> item.id.toString() === id)
-		// products[prodIndex] = prod
-	}
-
-	addItem(title, imgUrl, price, desc) {
-		const newId = ++this.id
-		const newProd = {
-			id: newId,
-			title: title,
-			imgUrl: imgUrl,
-			price: price,
-			desc: desc
-		}
-		products.push(newProd)
-	}
-
-	deleteItem(id) {
-		const index = products.findIndex(el => el.id == id)
-		products.splice(index, 1)
-	}
-}
-
-module.exports = new Product()
+module.exports = mongoose.model('Product', productShema)

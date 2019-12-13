@@ -2,15 +2,15 @@ const Product = require('../models/product')
 
 exports.getIndex = (req, res, next) => {
 	try {
-		res.status(200).render('index', {index: true})
+		res.status(200).render('index', { index: true })
 	} catch (error) {
 		next(error)
 	}
 }
 
-exports.getCatalog = (req, res, next) => {
+exports.getCatalog = async (req, res, next) => {
 	try {
-		const products = Product.getAllItems()
+		const products = await Product.find()
 		res.status(200).render('catalog', {
 			itemList: products,
 			catalog: true

@@ -58,9 +58,9 @@ exports.postEditItem = (req, res, next) => {
 	}
 }
 
-exports.adminCatalog = (req, res, next) => {
+exports.adminCatalog = async (req, res, next) => {
 	try {
-		const products = Product.getAllItems()
+		const products = await Product.find()
 		res.status(200).render('catalog', {
 			itemList: products,
 			isAdmin: true,
@@ -82,7 +82,7 @@ exports.getAddNewItem = (req, res, next) => {
 	}
 }
 
-exports.postAddNewItem = (req, res, next) => {
+exports.postAddNewItem = async (req, res, next) => {
 	try {
 		const validation = validationResult(req)
 		if (!validation.isEmpty()) {
@@ -101,7 +101,13 @@ exports.postAddNewItem = (req, res, next) => {
 		} else {
 			// no errors
 			const { title, imgUrl, price, desc } = req.body
-			Product.addItem(title, imgUrl, price, desc)
+			const product = new Product({
+				title: title,
+				imgUrl: imgUrl,
+				price: price,
+				desc: desc
+			})
+			await product.save()
 			res.redirect('/admin/catalog')
 		}
 	} catch (error) {
