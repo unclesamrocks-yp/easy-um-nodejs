@@ -12,8 +12,4 @@ rootRouter.use((req, res, next) => {
 	res.status(404).render('nopage')
 })
 
-rootRouter.use((err, req, res, next) => {
-	res.status(500).render('nopage', { error: true })
-})
-
 module.exports = rootRouter

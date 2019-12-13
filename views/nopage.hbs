@@ -1,10 +1,12 @@
 <div class="nopage-block">
-        <p class="nopage-text">
-            {{#if error}}
-                500 Internal Server Error
-            {{else}}
-                404 Not Found
-            {{/if}}
-        </p>
-    <img class="nopage-img" src="https://www.meme-arsenal.com/memes/b78a82ad864288ad880c64c6e278b1c5.jpg" alt="nothing there">
+    <div class="nopage-text">
+        {{#if error}}
+        <p>500 Internal Server Error</p>
+        <p>{{message}}</p>
+        {{else}}
+        404 Not Found
+        {{/if}}
+    </div>
+    <img class="nopage-img" src="https://www.meme-arsenal.com/memes/b78a82ad864288ad880c64c6e278b1c5.jpg"
+        alt="nothing there">
 </div>

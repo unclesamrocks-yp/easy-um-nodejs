@@ -35,21 +35,21 @@ exports.getEditItem = (req, res, next) => {
 exports.postEditItem = (req, res, next) => {
 	try {
 		const validation = validationResult(req)
-		if (validation.errors.length > 0) {
-			const errorObj = validation.errors.reduce(function (prev, curr) {
-				const prop = curr.param
-				prev[prop] = true
-				return prev
+		if (!validation.isEmpty()) {
+			const errors = validation.array().reduce((acc, curr) => {
+				acc[curr.param] = true
+				return acc
 			}, {})
 			res.status(200).render('admin/product', {
 				isAdmin: true,
-				add_item: true,
+				add_item: false,
 				isError: true,
 				product: req.body,
-				isInvalid: errorObj
+				isInvalid: errors
 			})
 		} else {
-			const { id, title, imgUrl, price, desc } = req.body
+			const id = req.params.id
+			const { title, imgUrl, price, desc } = req.body
 			Product.editItem(id, title, imgUrl, price, desc)
 			res.redirect('/admin/catalog')
 		}
@@ -85,11 +85,10 @@ exports.getAddNewItem = (req, res, next) => {
 exports.postAddNewItem = (req, res, next) => {
 	try {
 		const validation = validationResult(req)
-		if (validation.errors.length > 0) {
-			const errorObj = validation.errors.reduce(function (prev, curr) {
-				const prop = curr.param
-				prev[prop] = true
-				return prev
+		if (!validation.isEmpty()) {
+			const errors = validation.array().reduce((acc, curr) => {
+				acc[curr.param] = true
+				return acc
 			}, {})
 			// errors
 			res.status(200).render('admin/product', {
@@ -97,7 +96,7 @@ exports.postAddNewItem = (req, res, next) => {
 				add_item: true,
 				isError: true,
 				product: req.body,
-				isInvalid: errorObj
+				isInvalid: errors
 			})
 		} else {
 			// no errors

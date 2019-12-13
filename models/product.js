@@ -17,7 +17,7 @@ class Product {
 	}
 
 	editItem(id, title, imgUrl, price, desc) {
-		const prod = Product.getItemById(id)
+		const prod = products.find(prod => prod.id.toString() === id)
 		prod.title = title
 		prod.imgUrl = imgUrl
 		prod.price = price

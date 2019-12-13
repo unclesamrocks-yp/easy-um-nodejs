@@ -4,11 +4,17 @@ const express = require('express')
 const handlebars = require('express-handlebars')
 const sassMiddleware = require('node-sass-middleware')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const csurf = require('csurf')
 
 const rootRouter = require('./routes/root')
 
 const app = express()
+const csrfProtection = csurf({ cookie: true })
 
+/*==============================================
+		App Custom Middleware & Settings
+===============================================*/
 app.engine(
 	'hbs',
 	handlebars({
@@ -37,10 +43,36 @@ app.use(
 app.use(express.static('public'))
 
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cookieParser())
+app.use(csrfProtection)
+
+/*==============================================
+				Global Template Vars
+===============================================*/
+app.use((req, res, next) => {
+	res.locals.csrfToken = req.csrfToken() // addin csrf protection token here!
+	// res.locals.isAdmin = ....
+	// res.locals.cart = ...
+	next()
+})
 
 app.use(rootRouter) // root router logic here
 
-// init app
+/*==============================================
+				Error Middleware
+===============================================*/
+app.use((err, req, res, next) => {
+	if (err.code === 'EBADCSRFTOKEN') {
+		return res.status(500).render('nopage', { error: true, message: 'Invalid CSRF Token!' })
+	}
+	console.log('[ErrorMiddleware]')
+	console.log(err)
+	res.status(500).render('nopage', { error: true })
+})
+
+/*==============================================
+				Init App
+===============================================*/
 const PORT = 8080
 app.listen(PORT)
 console.log(`Server started on http://localhost:${PORT}`)

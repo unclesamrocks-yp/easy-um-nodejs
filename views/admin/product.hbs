@@ -1,6 +1,7 @@
 <div class="product clearfix">
-    <form class="adminEditForm" action="/admin/{{#if product}}editItem/{{product.id}}{{else}}addItem/{{/if}}"
+    <form class="adminEditForm" action="/admin/{{#unless add_item}}editItem/{{product.id}}{{else}}addItem/{{/unless}}"
         method="POST">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <div class="row">
             {{#if isError}}
             <p class="errorMsgBox">Пожалуйста, проверьте правильность заполнения полей!</p>
@@ -8,16 +9,20 @@
         </div>
         {{#if product}}<input type="hidden" name="id" value="{{product.id}}">{{/if}}
         <div class="row">
-            <input type="text" name="title" value="{{product.title}}" placeholder="Title" {{#if isInvalid.title}}class="invalid"{{/if}}>
+            <input type="text" name="title" value="{{product.title}}" placeholder="Title"
+                {{#if isInvalid.title}}class="invalid" {{/if}}>
         </div>
         <div class="row">
-            <input type="text" name="imgUrl" value="{{product.imgUrl}}" placeholder="Image Url" {{#if isInvalid.imgUrl}}class="invalid"{{/if}}>
+            <input type="text" name="imgUrl" value="{{product.imgUrl}}" placeholder="Image Url"
+                {{#if isInvalid.imgUrl}}class="invalid" {{/if}}>
         </div>
         <div class="row">
-            <input type="text" name="price" value="{{product.price}}" placeholder="Price" {{#if isInvalid.price}}class="invalid"{{/if}}>
+            <input type="text" name="price" value="{{product.price}}" placeholder="Price"
+                {{#if isInvalid.price}}class="invalid" {{/if}}>
         </div>
         <div class="row">
-            <textarea name="desc" placeholder="Description" {{#if isInvalid.desc}}class="invalid"{{/if}}>{{product.desc}}</textarea>
+            <textarea name="desc" placeholder="Description" {{#if isInvalid.desc}}class="invalid"
+                {{/if}}>{{product.desc}}</textarea>
         </div>
         <div class="row">
             <button type="submit">Ok!</button>
