@@ -1,5 +1,5 @@
 <div class="product clearfix">
-    <form class="adminEditForm" action="/admin/{{#unless add_item}}editItem/{{product.id}}{{else}}addItem/{{/unless}}"
+    <form class="form" action="/admin/{{#unless add_item}}editItem/{{product.id}}{{else}}addItem/{{/unless}}"
         method="POST">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <div class="row">
@@ -29,7 +29,3 @@
         </div>
     </form>
 </div>
-
-<script>
-    console.log('form loaded!')
-</script>

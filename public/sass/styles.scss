@@ -99,6 +99,10 @@ img {
 	.admin-nav {
 		font-weight: bold;
 	}
+	.login-nav {
+		font-weight: bold;
+		text-transform: uppercase;
+	}
 }
 
 /*CATALOG PAGE*/
@@ -164,7 +168,7 @@ img {
 }
 
 // admin edit form
-.adminEditForm {
+.form {
 	max-width: 300px;
 	margin: auto;
 

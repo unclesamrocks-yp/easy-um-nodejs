@@ -1,0 +1,30 @@
+<div class="product clearfix">
+    <form class="form" action="/addUser" method="POST">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <div class="row">
+            {{#if isError}}
+                <p class="errorMsgBox">Пожалуйста, проверьте правильность заполнения полей!</p>
+            {{/if}}
+        </div>
+        {{#if user}}<input type="hidden" name="id" value="{{user.id}}">{{/if}}
+        <div class="row">
+            <input type="text" name="name" value="{{user.name}}" placeholder="Name"
+                {{#if isInvalid.name}}class="invalid" {{/if}}>
+        </div>
+        <div class="row">
+            <input type="password" name="password" value="{{user.password}}" placeholder="Password"
+                {{#if isInvalid.password}}class="invalid" {{/if}}>
+        </div>
+        <div class="row">
+            <input type="text" name="birthdate" value="{{user.birthdate}}" placeholder="Birthdate"
+                {{#if isInvalid.birthdate}}class="invalid" {{/if}}>
+        </div>
+        <div class="row">
+            <input type="text" name="mail" value="{{user.mail}}" placeholder="Email"
+                {{#if isInvalid.email}}class="invalid" {{/if}}>
+        </div>
+        <div class="row">
+            <button type="submit">Ok!</button>
+        </div>
+    </form>
+</div>
