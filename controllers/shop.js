@@ -20,10 +20,10 @@ exports.getCatalog = async (req, res, next) => {
 	}
 }
 
-exports.getItem = (req, res, next) => {
+exports.getItem = async (req, res, next) => {
 	try {
 		const id = req.params.id
-		const product = Product.getItemById(id)
+		const product = await Product.findOne({_id: id})
 		if (!product) throw new Error('Product not found')
 		res.status(200).render('product', {
 			product: product

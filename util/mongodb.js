@@ -1,1 +1,1 @@
-exports.mongoURI = 'mongodb+srv://easy-um:DlYjvXFmK0vFmz0u@easy-um-ux2lr.mongodb.net/shop?retryWrites=true&w=majority'
+exports.mongoURI = 'mongodb+srv://lei-law:81IoqVEHeAEalmRR@lei-law-0qwqu.mongodb.net/test?retryWrites=true&w=majority'

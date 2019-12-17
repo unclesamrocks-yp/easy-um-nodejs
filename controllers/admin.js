@@ -2,10 +2,10 @@ const { validationResult } = require('express-validator')
 
 const Product = require('../models/product')
 
-exports.getItem = (req, res, next) => {
+exports.getItem = async (req, res, next) => {
 	try {
 		const id = req.params.id
-		const product = Product.getItemById(id)
+		const product = await Product.findOne({_id: id})
 		if (product) {
 			res.status(200).render('product', {
 				isAdmin: true,
@@ -17,10 +17,10 @@ exports.getItem = (req, res, next) => {
 	}
 }
 
-exports.getEditItem = (req, res, next) => {
+exports.getEditItem = async (req, res, next) => {
 	try {
 		const id = req.params.id
-		const product = Product.getItemById(id)
+		const product = await Product.findOne({_id: id})
 		if (product) {
 			res.status(200).render('admin/product', {
 				isAdmin: true,
@@ -32,7 +32,7 @@ exports.getEditItem = (req, res, next) => {
 	}
 }
 
-exports.postEditItem = (req, res, next) => {
+exports.postEditItem = async (req, res, next) => {
 	try {
 		const validation = validationResult(req)
 		if (!validation.isEmpty()) {
@@ -50,9 +50,17 @@ exports.postEditItem = (req, res, next) => {
 		} else {
 			const id = req.params.id
 			const { title, imgUrl, price, desc } = req.body
-			Product.editItem(id, title, imgUrl, price, desc)
+			// Product.editItem(id, title, imgUrl, price, desc)
+			await Product.updateOne({_id: id},
+				{$set: {
+						title: title,
+						imgUrl: imgUrl,
+						price: price,
+						desc: desc
+					}}
+				)
 			res.redirect('/admin/catalog')
-		}
+	}
 	} catch (error) {
 		next(error)
 	}
@@ -115,10 +123,10 @@ exports.postAddNewItem = async (req, res, next) => {
 	}
 }
 
-exports.postDeleteItem = (req, res, next) => {
+exports.postDeleteItem = async (req, res, next) => {
 	try {
 		const id = req.params.id
-		const product = Product.getItemById(id)
+		const product = await Product.findOne({_id: id})
 		if (product) {
 			res.status(200).render('admin/delete', {
 				isAdmin: true,
@@ -130,10 +138,10 @@ exports.postDeleteItem = (req, res, next) => {
 	}
 }
 
-exports.deleteConfirmed = (req, res, next) => {
+exports.deleteConfirmed = async (req, res, next) => {
 	try {
 		const id = req.params.id
-		Product.deleteItem(id)
+		await Product.remove({_id: id})
 		res.redirect('/catalog')
 	} catch (error) {
 		next(error)
