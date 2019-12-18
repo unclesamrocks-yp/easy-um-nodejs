@@ -5,7 +5,7 @@ const Product = require('../models/product')
 exports.getItem = async (req, res, next) => {
 	try {
 		const id = req.params.id
-		const product = await Product.findOne({_id: id})
+		const product = await Product.findById(id)
 		if (product) {
 			res.status(200).render('product', {
 				isAdmin: true,
@@ -20,7 +20,7 @@ exports.getItem = async (req, res, next) => {
 exports.getEditItem = async (req, res, next) => {
 	try {
 		const id = req.params.id
-		const product = await Product.findOne({_id: id})
+		const product = await Product.findOne({ _id: id })
 		if (product) {
 			res.status(200).render('admin/product', {
 				isAdmin: true,
@@ -50,17 +50,28 @@ exports.postEditItem = async (req, res, next) => {
 		} else {
 			const id = req.params.id
 			const { title, imgUrl, price, desc } = req.body
-			// Product.editItem(id, title, imgUrl, price, desc)
-			await Product.updateOne({_id: id},
-				{$set: {
-						title: title,
-						imgUrl: imgUrl,
-						price: price,
-						desc: desc
-					}}
-				)
+			// const response = await Product.updateOne(
+			// 	{ _id: id },
+			// 	{
+			// 		$set: {
+			// 			title: title,
+			// 			imgUrl: imgUrl,
+			// 			price: price,
+			// 			desc: desc
+			// 		}
+			// 	}
+			// )
+			// console.log(response)
+			const prod = await Product.findById(id)
+			if (!prod) throw new Error(`No product found by id: ${id}`)
+			prod.title = title
+			prod.imgUrl = imgUrl
+			prod.price = price
+			prod.desc = desc
+			const reponse = await prod.save()
+			// console.log('[postEditItem]', reponse)
 			res.redirect('/admin/catalog')
-	}
+		}
 	} catch (error) {
 		next(error)
 	}
@@ -68,7 +79,9 @@ exports.postEditItem = async (req, res, next) => {
 
 exports.adminCatalog = async (req, res, next) => {
 	try {
-		const products = await Product.find()
+		const products = await Product.find({ title: /\d/ })
+		const countDocs = await Product.estimatedDocumentCount()
+		console.log('[adminCatalog][countDocs]', countDocs)
 		res.status(200).render('catalog', {
 			itemList: products,
 			isAdmin: true,
@@ -126,7 +139,7 @@ exports.postAddNewItem = async (req, res, next) => {
 exports.postDeleteItem = async (req, res, next) => {
 	try {
 		const id = req.params.id
-		const product = await Product.findOne({_id: id})
+		const product = await Product.findOne({ _id: id })
 		if (product) {
 			res.status(200).render('admin/delete', {
 				isAdmin: true,
@@ -141,7 +154,7 @@ exports.postDeleteItem = async (req, res, next) => {
 exports.deleteConfirmed = async (req, res, next) => {
 	try {
 		const id = req.params.id
-		await Product.remove({_id: id})
+		const response = await Product.deleteOne({ _id: id })
 		res.redirect('/catalog')
 	} catch (error) {
 		next(error)
