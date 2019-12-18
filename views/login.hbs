@@ -1,9 +1,9 @@
 <div class="product clearfix">
-    <form class="form" action="/addUser" method="POST">
+    <form class="form" action="/auth/addUser" method="POST">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <div class="row">
             {{#if isError}}
-                <p class="errorMsgBox">Пожалуйста, проверьте правильность заполнения полей!</p>
+            <p class="errorMsgBox">Пожалуйста, проверьте правильность заполнения полей!</p>
             {{/if}}
         </div>
         {{#if user}}<input type="hidden" name="id" value="{{user.id}}">{{/if}}
