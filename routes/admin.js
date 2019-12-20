@@ -5,6 +5,8 @@ const router = express.Router()
 
 const controllerAdmin = require('../controllers/admin')
 
+const { isAdmin } = require('../middleware/isAdmin')
+
 /*==============================================
 				VALIDATION
 ===============================================*/
@@ -21,21 +23,23 @@ const validationPostItem = [
 				ROUTES
 ===============================================*/
 
-router.get('/admin/item/:id', controllerAdmin.getItem)
+router.get('/admin/item/:id', isAdmin, controllerAdmin.getItem)
 
-router.get('/admin/editItem/:id', controllerAdmin.getEditItem)
+router.get('/admin/editItem/:id', isAdmin, controllerAdmin.getEditItem)
 
-router.post('/admin/editItem/:id', validationPostItem, controllerAdmin.postEditItem)
+router.post('/admin/editItem/:id', isAdmin, validationPostItem, controllerAdmin.postEditItem)
 
-router.get('/admin/catalog/:page', controllerAdmin.adminCatalog)
+router.get('/admin/catalog', isAdmin, controllerAdmin.adminCatalog)
 
-router.get('/admin/new', controllerAdmin.getAddNewItem)
+router.get('/admin/catalog/:page', isAdmin, controllerAdmin.adminCatalog)
 
-router.post('/admin/addItem', validationPostItem, controllerAdmin.postAddNewItem)
+router.get('/admin/new', isAdmin, controllerAdmin.getAddNewItem)
 
-router.get('/admin/delete/:id', controllerAdmin.postDeleteItem)
+router.post('/admin/addItem', isAdmin, validationPostItem, controllerAdmin.postAddNewItem)
 
-router.get('/admin/deleteConfirmed/:id', controllerAdmin.deleteConfirmed)
+router.get('/admin/delete/:id', isAdmin, controllerAdmin.postDeleteItem)
+
+router.get('/admin/deleteConfirmed/:id', isAdmin, controllerAdmin.deleteConfirmed)
 
 // exports
 module.exports = router

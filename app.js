@@ -74,7 +74,9 @@ mongoose
 		===============================================*/
 		app.use((req, res, next) => {
 			res.locals.csrfToken = req.csrfToken() // addin csrf protection token here!
-			console.log(req.session)
+			res.locals.isLogged = req.session.isLogged
+			res.locals.isAdmin = req.session.isAdmin
+			console.log('[App][session]', req.session)
 			// res.locals.isAdmin = ....
 			// res.locals.cart = ...
 			next()

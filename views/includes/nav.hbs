@@ -6,14 +6,21 @@
         <div class="NavList__item">
             <a href="/catalog/1" {{#if catalog}}class="active" {{/if}}>Catalog</a>
         </div>
+        {{#if isAdmin}}
         <div class="NavList__item">
             <a href="/admin/catalog" class="admin-nav{{#if admin_catalog}} active{{/if}}">Admin Catalog</a>
         </div>
         <div class="NavList__item">
             <a href="/admin/new" class="admin-nav{{#if add_item}} active{{/if}}">Add Product</a>
         </div>
+        {{/if}}
+        {{#unless isLogged}}
         <div class="NavList__item">
             <a href="/auth/login" class="login-nav{{#if login}} active{{/if}}">Log In</a>
+            <a href="/auth/register" class="login-nav{{#if login}} active{{/if}}">Register</a>
         </div>
+        {{else}}
+        <a href="/auth/logout" class="login-nav">Logout</a>
+        {{/unless}}
     </div>
 </nav>
