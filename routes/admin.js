@@ -27,7 +27,7 @@ router.get('/admin/editItem/:id', controllerAdmin.getEditItem)
 
 router.post('/admin/editItem/:id', validationPostItem, controllerAdmin.postEditItem)
 
-router.get('/admin/catalog', controllerAdmin.adminCatalog)
+router.get('/admin/catalog/:page', controllerAdmin.adminCatalog)
 
 router.get('/admin/new', controllerAdmin.getAddNewItem)
 

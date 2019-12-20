@@ -8,7 +8,7 @@ const controllerShop = require('../controllers/shop')
 
 router.get('/', controllerShop.getIndex)
 
-router.get('/catalog', controllerShop.getCatalog)
+router.get('/catalog/:page', controllerShop.getCatalog)
 
 router.get('/item/:id', controllerShop.getItem)
 

@@ -35,7 +35,12 @@ mongoose
 				layoutsDir: 'views/layout',
 				defaultLayout: 'main',
 				extname: 'hbs',
-				partialsDir: 'views/includes'
+				partialsDir: 'views/includes',
+
+				helpers: {
+					prev: function (page) {return page - 1},
+					next: function (page) {return page + 1}
+				}
 			})
 		)
 		app.set('view engine', 'hbs')

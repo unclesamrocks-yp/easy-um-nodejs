@@ -68,9 +68,11 @@ exports.postEditItem = async (req, res, next) => {
 			prod.imgUrl = imgUrl
 			prod.price = price
 			prod.desc = desc
-			const reponse = await prod.save()
-			// console.log('[postEditItem]', reponse)
-			res.redirect('/admin/catalog')
+			prod.save()
+			const itemLimit = 3 //вынести
+			const countDocs = await Product.estimatedDocumentCount() //загрузка
+			const pages = Math.ceil(countDocs/itemLimit)
+			res.redirect(`/admin/catalog/1`)//нужная страница
 		}
 	} catch (error) {
 		next(error)
@@ -79,13 +81,18 @@ exports.postEditItem = async (req, res, next) => {
 
 exports.adminCatalog = async (req, res, next) => {
 	try {
-		const products = await Product.find({ title: /\d/ })
+		const itemLimit = 3
+		const thePage = eval(req.params.page)
 		const countDocs = await Product.estimatedDocumentCount()
-		console.log('[adminCatalog][countDocs]', countDocs)
+		const pages = Math.ceil(countDocs/itemLimit)
+		if (thePage <= 0 || thePage > pages) next(error)
+		const products = await Product.find().skip(itemLimit*(thePage-1)).limit(itemLimit)
+		// console.log('[adminCatalog][countDocs]', countDocs)
 		res.status(200).render('catalog', {
 			itemList: products,
 			isAdmin: true,
-			admin_catalog: true
+			admin_catalog: true,
+			thePage: thePage
 		})
 	} catch (error) {
 		next(error)
@@ -129,7 +136,10 @@ exports.postAddNewItem = async (req, res, next) => {
 				desc: desc
 			})
 			await product.save()
-			res.redirect('/admin/catalog')
+			const itemLimit = 3
+			const countDocs = await Product.estimatedDocumentCount()
+			const pages = Math.ceil(countDocs/itemLimit)
+			res.redirect(`/admin/catalog/${pages}`)
 		}
 	} catch (error) {
 		next(error)
@@ -155,7 +165,10 @@ exports.deleteConfirmed = async (req, res, next) => {
 	try {
 		const id = req.params.id
 		const response = await Product.deleteOne({ _id: id })
-		res.redirect('/catalog')
+		const itemLimit = 3
+		const countDocs = await Product.estimatedDocumentCount()
+		const pages = Math.ceil(countDocs/itemLimit)
+		res.redirect(`/admin/catalog/1`)
 	} catch (error) {
 		next(error)
 	}

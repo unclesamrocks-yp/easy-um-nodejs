@@ -137,6 +137,19 @@ img {
 	}
 }
 
+.pagination-block {
+	text-align: center;
+	font-size: 30px;
+	.page-arrow {
+		font-family: Arial, sans-serif;
+		display: inline-block;
+		padding: 10px 20px;
+	}
+	.page-number {
+		font-weight: bold;
+	}
+}
+
 // global pricing, title styles
 .title {
 	font-size: 24px;

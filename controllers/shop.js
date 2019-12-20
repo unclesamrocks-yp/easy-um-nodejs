@@ -13,10 +13,17 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCatalog = async (req, res, next) => {
 	try {
-		const products = await Product.find()
+		const itemLimit = 3
+		const thePage = eval(req.params.page)
+		const countDocs = await Product.estimatedDocumentCount()
+		const pages = Math.ceil(countDocs/itemLimit)
+		if (thePage <= 0 || thePage > pages) next(error)
+		const products = await Product.find().skip(itemLimit*(thePage-1)).limit(itemLimit)
+		// const products = await Product.find()
 		res.status(200).render('catalog', {
 			itemList: products,
-			catalog: true
+			catalog: true,
+			thePage: thePage
 		})
 	} catch (error) {
 		next(error)
