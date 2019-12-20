@@ -27,7 +27,7 @@ mongoose
 	.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => {
 		/*==============================================
-			App Custom Middleware & Settings
+				App Custom Middleware & Settings
 		===============================================*/
 		app.engine(
 			'hbs',
@@ -35,12 +35,7 @@ mongoose
 				layoutsDir: 'views/layout',
 				defaultLayout: 'main',
 				extname: 'hbs',
-				partialsDir: 'views/includes',
-
-				helpers: {
-					prev: function (page) {return page - 1},
-					next: function (page) {return page + 1}
-				}
+				partialsDir: 'views/includes'
 			})
 		)
 		app.set('view engine', 'hbs')
@@ -96,7 +91,7 @@ mongoose
 			}
 			console.log('[ErrorMiddleware]')
 			console.log(err)
-			res.status(500).render('nopage', { error: true })
+			res.status(500).render('nopage', { error: true, message: err.message })
 		})
 
 		/*==============================================
