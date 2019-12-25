@@ -23,9 +23,12 @@ const csrfProtection = csurf({ cookie: true })
 /*==============================================
 			Connect MongoDB
 ===============================================*/
+mongoose.set('useCreateIndex', true)
 mongoose
 	.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => {
+		// mongoose settings
+
 		/*==============================================
 				App Custom Middleware & Settings
 		===============================================*/
@@ -76,7 +79,7 @@ mongoose
 			res.locals.csrfToken = req.csrfToken() // addin csrf protection token here!
 			res.locals.isLogged = req.session.isLogged
 			res.locals.isAdmin = req.session.isAdmin
-			console.log('[App][session]', req.session)
+			// console.log('[App][session]', req.session)
 			// res.locals.isAdmin = ....
 			// res.locals.cart = ...
 			next()

@@ -1,8 +1,9 @@
 <div>
-    <form action="{{#if isAdmin}}/admin{{/if}}/catalog/" method="GET" class="form catalog-form">
+    <form action="{{#if isAdmin}}/admin{{/if}}/catalog" method="GET" class="form catalog-form">
         <div class="checkbox-row">
             {{#each categories}}
-                <label><input type="checkbox" name="category" value="{{this._id}}" class="form-checkbox"> {{this.title}}</label>
+            <label><input type="checkbox" name="category" value="{{this._id}}" class="form-checkbox">
+                {{this.title}}</label>
             {{/each}}
         </div>
         <div class="row"><button type="submit">Ok!</button></div>
@@ -19,6 +20,6 @@
 </div>
 <div class="pagination-block">
     {{#if pagination}}
-        {{>pagination this}}
+    {{>pagination this}}
     {{/if}}
 </div>

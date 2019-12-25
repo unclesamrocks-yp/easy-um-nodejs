@@ -1,13 +1,14 @@
 {{#each pagination}}
-    {{#if show}}
-        {{#if page}}
-            {{#if arrow}}
-                <a href="{{#if isAdmin}}/admin{{/if}}/catalog/{{this.val}}" class="page-number">{{this.look}}</a>
-            {{else}}
-                <a href="{{#if isAdmin}}/admin{{/if}}/catalog/{{this.val}}" class="page-number {{#if active}}active{{/if}}">{{this.val}}</a>
-            {{/if}}
-        {{else}}
-            <span>{{this.val}}</span>
-        {{/if}}
-    {{/if}}
+{{#if show}}
+{{#if page}}
+{{#if arrow}}
+<a href="{{#if ../admin_catalog}}/admin{{/if}}/catalog/{{this.val}}" class="page-number">{{this.look}}</a>
+{{else}}
+<a href="{{#if ../admin_catalog}}/admin{{/if}}/catalog/{{this.val}}"
+    class="page-number {{#if active}}active{{/if}}">{{this.val}}</a>
+{{/if}}
+{{else}}
+<span>{{this.val}}</span>
+{{/if}}
+{{/if}}
 {{/each}}

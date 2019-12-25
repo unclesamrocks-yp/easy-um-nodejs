@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator')
+const { isMongoId } = require('validator').default
 
 const Product = require('../models/product')
 const Category = require('../models/category')
@@ -13,10 +14,11 @@ exports.getItem = async (req, res, next) => {
 		const product = await Product.findById(id)
 		if (product) {
 			res.status(200).render('product', {
-				isAdmin: true,
 				product: product
 			})
-		} else next(error)
+		} else {
+			next(error)
+		}
 	} catch (error) {
 		next(error)
 	}
@@ -29,9 +31,8 @@ exports.getEditItem = async (req, res, next) => {
 		const product = await Product.findOne({ _id: id })
 		if (product) {
 			res.status(200).render('admin/product', {
-				isAdmin: true,
 				product: product,
-				categories: categories,
+				categories: categories
 			})
 		} else next(error)
 	} catch (error) {
@@ -49,7 +50,6 @@ exports.postEditItem = async (req, res, next) => {
 				return acc
 			}, {})
 			res.status(200).render('admin/product', {
-				isAdmin: true,
 				add_item: false,
 				isError: true,
 				categories: categories,
@@ -79,18 +79,29 @@ exports.postEditItem = async (req, res, next) => {
 
 exports.adminCatalog = async (req, res, next) => {
 	try {
+		// lets check get params
+		let query = req.query.category || null
+		if (query) {
+			const isValidMongoCollection = [].concat(query).every(mongoId => isMongoId(mongoId))
+			if (isValidMongoCollection) {
+				query = {
+					category: {
+						$all: query
+					}
+				}
+			}
+		}
 		const categories = await Category.find()
 		const currPage = req.params.page || 1
 		const countDocs = await Product.estimatedDocumentCount()
 		const pages = Math.ceil(countDocs / ITEMS_PER_PAGE)
 		if (currPage !== null && currPage > pages) throw new Error('[getCatalog] Requested page is not found!')
-		const products = await Product.find()
+		const products = await Product.find(query || {})
 			.skip(ITEMS_PER_PAGE * (currPage - 1))
 			.limit(ITEMS_PER_PAGE)
 		const pagination = new Pagination(currPage, pages).prepare()
 		res.status(200).render('catalog', {
 			itemList: products,
-			isAdmin: true,
 			admin_catalog: true,
 			pagination: pagination,
 			categories: categories
@@ -105,7 +116,6 @@ exports.getAddNewItem = async (req, res, next) => {
 		const categories = await Category.find()
 		console.log(categories)
 		res.status(200).render('admin/product', {
-			isAdmin: true,
 			add_item: true,
 			categories: categories
 		})
@@ -125,7 +135,6 @@ exports.postAddNewItem = async (req, res, next) => {
 			}, {})
 			// errors
 			res.status(200).render('admin/product', {
-				isAdmin: true,
 				add_item: true,
 				isError: true,
 				product: req.body,
@@ -182,7 +191,6 @@ exports.getEditCategory = async (req, res, next) => {
 		const category = await Category.findOne({ _id: id })
 		if (category) {
 			res.status(200).render('admin/category', {
-				isAdmin: true,
 				categories_page: true,
 				category: category
 			})
@@ -202,7 +210,6 @@ exports.postAddCategory = async (req, res, next) => {
 			}, {})
 			// errors
 			res.status(200).render('admin/category', {
-				isAdmin: true,
 				categories_page: true,
 				add_category: true,
 				isError: true,
@@ -232,7 +239,6 @@ exports.postEditCategory = async (req, res, next) => {
 				return acc
 			}, {})
 			res.status(200).render('admin/product', {
-				isAdmin: true,
 				categories_page: true,
 				isError: true,
 				category: req.body,
@@ -258,7 +264,6 @@ exports.postDeleteItem = async (req, res, next) => {
 		const product = await Product.findOne({ _id: id })
 		if (product) {
 			res.status(200).render('admin/delete', {
-				isAdmin: true,
 				product: product
 			})
 		} else next(error)
