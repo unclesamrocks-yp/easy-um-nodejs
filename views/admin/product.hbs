@@ -26,7 +26,10 @@
         </div>
         <div class="checkbox-row">
             {{#each categories}}
-                <label><input type="checkbox" name="category" value="{{this._id}}" class="form-checkbox"> {{this.title}}</label>
+            <div class="categoryRow">
+                <input type="checkbox" name="category" value="{{this._id}}" {{#if this.checked}}checked="true" {{/if}}>
+                <label for="category">{{this.title}}</label>
+            </div>
             {{/each}}
         </div>
         <div class="row">

@@ -29,10 +29,17 @@ exports.getEditItem = async (req, res, next) => {
 		const categories = await Category.find()
 		const id = req.params.id
 		const product = await Product.findOne({ _id: id })
+		const checkedCategories = categories.map(item => {
+			item = item.toObject()
+			if (product.category.some(v => v.toString() === item._id.toString())) {
+				item.checked = true
+			}
+			return item
+		})
 		if (product) {
 			res.status(200).render('admin/product', {
 				product: product,
-				categories: categories
+				categories: checkedCategories
 			})
 		} else next(error)
 	} catch (error) {
