@@ -24,12 +24,14 @@ exports.getItem = async (req, res, next) => {
 
 exports.getEditItem = async (req, res, next) => {
 	try {
+		const categories = await Category.find()
 		const id = req.params.id
 		const product = await Product.findOne({ _id: id })
 		if (product) {
 			res.status(200).render('admin/product', {
 				isAdmin: true,
-				product: product
+				product: product,
+				categories: categories,
 			})
 		} else next(error)
 	} catch (error) {
@@ -77,6 +79,7 @@ exports.postEditItem = async (req, res, next) => {
 
 exports.adminCatalog = async (req, res, next) => {
 	try {
+		const categories = await Category.find()
 		const currPage = req.params.page || 1
 		const countDocs = await Product.estimatedDocumentCount()
 		const pages = Math.ceil(countDocs / ITEMS_PER_PAGE)
@@ -84,15 +87,13 @@ exports.adminCatalog = async (req, res, next) => {
 		const products = await Product.find()
 			.skip(ITEMS_PER_PAGE * (currPage - 1))
 			.limit(ITEMS_PER_PAGE)
-		// pagination
 		const pagination = new Pagination(currPage, pages).prepare()
-		// console.log(pagination)
-		// const products = await Product.find()
 		res.status(200).render('catalog', {
 			itemList: products,
 			isAdmin: true,
 			admin_catalog: true,
-			pagination: pagination
+			pagination: pagination,
+			categories: categories
 		})
 	} catch (error) {
 		next(error)

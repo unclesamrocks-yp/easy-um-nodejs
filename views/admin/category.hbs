@@ -1,0 +1,19 @@
+<div class="clearfix">
+    <form class="form" action="/admin/{{#if add_category}}addCategory/{{else}}editCategory/{{category.id}}{{/if}}"
+          method="POST">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <div class="row">
+            {{#if isError}}
+                <p class="errorMsgBox">Пожалуйста, заполните поле!</p>
+            {{/if}}
+        </div>
+        {{#if category}}<input type="hidden" name="id" value="{{category.id}}">{{/if}}
+        <div class="row">
+            <input type="text" name="title" value="{{category.title}}" placeholder="Title"
+                {{#if isInvalid.title}}class="invalid" {{/if}}>
+        </div>
+        <div class="row">
+            <button type="submit">Ok!</button>
+        </div>
+    </form>
+</div>

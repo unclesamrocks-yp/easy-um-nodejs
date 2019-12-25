@@ -117,7 +117,7 @@ img {
 	flex-wrap: wrap;
 	justify-content: space-between;
 
-	max-width: 90%;
+	max-width: 80%;
 	margin: auto;
 
 	.item {
@@ -125,7 +125,7 @@ img {
 		border-right: 2px solid lightgray;
 		border-bottom: 2px solid lightgray;
 		padding: 20px 30px 20px 0;
-		margin: 20px;
+		margin: 50px;
 
 		.img-block img {
 			width: 240px;
@@ -214,6 +214,10 @@ img {
 			font-size: 14px;
 		}
 
+		label {
+			width: 50%;
+		}
+
 		button {
 			border: 1px solid black;
 			border-radius: 5px;
@@ -226,6 +230,29 @@ img {
 				background-color: gray;
 				transition: background-color 0.3s linear;
 			}
+		}
+	}
+
+	.checkbox-row {
+		width: 85%;
+		margin: 0 auto;
+		display: flex;
+		flex-wrap: wrap;
+		label {
+			width: 50%;
+			.form-checkbox {
+				display: inline-block;
+			}
+		}
+	}
+}
+
+.catalog-form {
+	max-width: 600px;
+	.checkbox-row {
+		width: 100%;
+		label {
+			width: 33%;
 		}
 	}
 }

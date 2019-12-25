@@ -1,0 +1,5 @@
+<a href="/admin/add-category">New Category</a>
+
+{{#each categories}}
+    <p>{{this.title}}, <a href="/admin/edit-category/{{this._id}}">edit</a></p>
+{{/each}}

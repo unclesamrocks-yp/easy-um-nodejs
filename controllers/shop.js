@@ -1,5 +1,6 @@
 const Product = require('../models/product')
 const User = require('../models/user')
+const Category = require('../models/category')
 
 const Pagination = require('../util/helpers')
 
@@ -15,6 +16,7 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCatalog = async (req, res, next) => {
 	try {
+		const categories = await Category.find()
 		const currPage = req.params.page || 1
 		const countDocs = await Product.estimatedDocumentCount()
 		const pages = Math.ceil(countDocs / ITEMS_PER_PAGE)
@@ -29,7 +31,8 @@ exports.getCatalog = async (req, res, next) => {
 			itemList: products,
 			catalog: true,
 			currPage: currPage ? currPage : 1,
-			pagination: pagination
+			pagination: pagination,
+			categories: categories
 		})
 	} catch (error) {
 		next(error)
