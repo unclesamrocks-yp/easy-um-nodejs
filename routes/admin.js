@@ -1,5 +1,6 @@
 const express = require('express')
-const { body } = require('express-validator')
+// const { body } = require('express-validator')
+const { body, param, sanitizeParam } = require('express-validator')
 
 const router = express.Router()
 
@@ -19,6 +20,12 @@ const validationPostItem = [
 	body('imgUrl').isURL()
 ]
 
+const validationPostCategory = [
+	body('title')
+		.trim()
+		.isLength({ min: 5 })
+]
+
 /*==============================================
 				ROUTES
 ===============================================*/
@@ -31,9 +38,28 @@ router.post('/admin/editItem/:id', isAdmin, validationPostItem, controllerAdmin.
 
 router.get('/admin/catalog', isAdmin, controllerAdmin.adminCatalog)
 
-router.get('/admin/catalog/:page', isAdmin, controllerAdmin.adminCatalog)
+router.get('/admin/catalog/:page', isAdmin, [
+		sanitizeParam('page').customSanitizer(value => {
+			// parsing string
+			const possibleNum = parseInt(value)
+			const isNum = !isNaN(possibleNum) && possibleNum >= 1
+			return isNum ? possibleNum : null
+		}),
+		param('page').custom(value => typeof value === 'number' || value === null)
+	],
+	controllerAdmin.adminCatalog)
 
 router.get('/admin/new', isAdmin, controllerAdmin.getAddNewItem)
+
+router.get('/admin/categories', isAdmin, controllerAdmin.getCategories)
+
+router.get('/admin/add-category', isAdmin, controllerAdmin.getAddCategory)
+
+router.get('/admin/edit-category/:id', isAdmin, controllerAdmin.getEditCategory)
+
+router.post('/admin/addCategory', isAdmin, validationPostCategory, controllerAdmin.postAddCategory)
+
+router.post('/admin/editCategory/:id', isAdmin, validationPostCategory, controllerAdmin.postEditCategory)
 
 router.post('/admin/addItem', isAdmin, validationPostItem, controllerAdmin.postAddNewItem)
 

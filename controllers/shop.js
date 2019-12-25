@@ -15,8 +15,7 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCatalog = async (req, res, next) => {
 	try {
-		const currPage = req.params.page || null
-		console.log('[currPage]', currPage)
+		const currPage = req.params.page || 1
 		const countDocs = await Product.estimatedDocumentCount()
 		const pages = Math.ceil(countDocs / ITEMS_PER_PAGE)
 		if (currPage !== null && currPage > pages) throw new Error('[getCatalog] Requested page is not found!')
@@ -25,8 +24,7 @@ exports.getCatalog = async (req, res, next) => {
 			.limit(ITEMS_PER_PAGE)
 		// pagination
 		const pagination = new Pagination(currPage, pages).prepare()
-		console.log(pagination)
-		// const products = await Product.find()
+		// console.log(pagination)
 		res.status(200).render('catalog', {
 			itemList: products,
 			catalog: true,

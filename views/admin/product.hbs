@@ -24,6 +24,9 @@
             <textarea name="desc" placeholder="Description" {{#if isInvalid.desc}}class="invalid"
                 {{/if}}>{{product.desc}}</textarea>
         </div>
+            {{#each categories}}
+                <label class="form-checkbox"><input type="checkbox" name="category" value="{{this._id}}"> {{this.title}}</label>
+            {{/each}}
         <div class="row">
             <button type="submit">Ok!</button>
         </div>

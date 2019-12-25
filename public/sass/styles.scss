@@ -34,6 +34,14 @@ img {
 	border: 1px solid lightgray;
 }
 
+.active {
+	color: red;
+}
+
+.form-checkbox {
+	display: block;
+}
+
 .mainWrap {
 	display: flex;
 	flex-direction: column;
@@ -93,9 +101,6 @@ img {
 .NavList__item {
 	display: inline-block;
 	margin-left: 30px;
-	.active {
-		color: red;
-	}
 	.admin-nav {
 		font-weight: bold;
 	}

@@ -4,7 +4,7 @@
             <a href="/" {{#if index}}class="active" {{/if}}>Home</a>
         </div>
         <div class="NavList__item">
-            <a href="/catalog/1" {{#if catalog}}class="active" {{/if}}>Catalog</a>
+            <a href="/catalog" {{#if catalog}}class="active" {{/if}}>Catalog</a>
         </div>
         {{#if isAdmin}}
         <div class="NavList__item">
@@ -12,6 +12,9 @@
         </div>
         <div class="NavList__item">
             <a href="/admin/new" class="admin-nav{{#if add_item}} active{{/if}}">Add Product</a>
+        </div>
+        <div class="NavList__item">
+            <a href="/admin/categories" class="admin-nav{{#if categories_page}} active{{/if}}">Categories</a>
         </div>
         {{/if}}
         {{#unless isLogged}}

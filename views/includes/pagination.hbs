@@ -1,3 +1,13 @@
-<a href="{{#if isAdmin}}/admin{{/if}}/catalog/{{prev currPage}}" class="page-arrow">&larr;</a>
-<span class="page-number">{{currPage}}</span>
-<a href="{{#if isAdmin}}/admin{{/if}}/catalog/{{next currPage}}" class="page-arrow">&rarr;</a>
+{{#each pagination}}
+    {{#if show}}
+        {{#if page}}
+            {{#if arrow}}
+                <a href="{{#if isAdmin}}/admin{{/if}}/catalog/{{this.val}}" class="page-number">{{this.look}}</a>
+            {{else}}
+                <a href="{{#if isAdmin}}/admin{{/if}}/catalog/{{this.val}}" class="page-number {{#if active}}active{{/if}}">{{this.val}}</a>
+            {{/if}}
+        {{else}}
+            <span>{{this.val}}</span>
+        {{/if}}
+    {{/if}}
+{{/each}}

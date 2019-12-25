@@ -9,22 +9,6 @@
 </div>
 <div class="pagination-block">
     {{#if pagination}}
-    {{#each pagination}}
-    {{!-- active --}}
-    {{#if this.active}}
-    {{!-- page --}}
-    {{#if this.page}}
-    <a href="{{#if isAdmin}}/admin{{/if}}/catalog/{{this.val}}" class="page-number">{{this.val}}</a>
-    {{/if}}
-    {{!-- next --}}
-    {{#if this.next}}
-    <a href="{{#if isAdmin}}/admin{{/if}}/catalog/{{this.val}}" class="page-arrow">&rarr;</a>
-    {{/if}}
-    {{!-- last --}}
-    {{#if this.last}}
-    <a href="{{#if isAdmin}}/admin{{/if}}/catalog/{{this.val}}" class="page-arrow">&rarr;</a>
-    {{/if}}
-    {{/if}}
-    {{/each}}
+        {{>pagination this}}
     {{/if}}
 </div>
