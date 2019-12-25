@@ -1,6 +1,13 @@
 <div class="product clearfix">
-    <form class="form" action="/admin/{{#unless add_item}}editItem/{{product.id}}{{else}}addItem/{{/unless}}"
-        method="POST">
+    <form 
+    class="form"
+    {{#unless add_item}}
+    action="/admin/editItem/{{product.id}}?_csrf={{csrfToken}}"
+    {{else}}
+    action='/admin/addItem?_csrf={{csrfToken}}'
+    {{/unless}}
+    method="POST" 
+    enctype="multipart/form-data">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <div class="row">
             {{#if isError}}
@@ -19,6 +26,9 @@
         <div class="row">
             <input type="text" name="price" value="{{product.price}}" placeholder="Price"
                 {{#if isInvalid.price}}class="invalid" {{/if}}>
+        </div>
+        <div class="row">
+            <input type="file" name="file">
         </div>
         <div class="row">
             <textarea name="desc" placeholder="Description" {{#if isInvalid.desc}}class="invalid"

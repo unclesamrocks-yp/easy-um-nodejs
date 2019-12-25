@@ -58,6 +58,7 @@ mongoose
 		)
 
 		app.use(express.static('public'))
+		app.use(express.static('uploads'))
 
 		app.use(bodyParser.urlencoded({ extended: true }))
 		app.use(cookieParser())
@@ -92,6 +93,7 @@ mongoose
 		===============================================*/
 		app.use((err, req, res, next) => {
 			if (err.code === 'EBADCSRFTOKEN') {
+				console.log('[req.query._csrf]', req.query._csrf)
 				return res.status(500).render('nopage', { error: true, message: 'Invalid CSRF Token!' })
 			}
 			console.log('[ErrorMiddleware]')

@@ -1,3 +1,5 @@
+const path = require('path')
+
 const { validationResult } = require('express-validator')
 const { isMongoId } = require('validator').default
 
@@ -7,6 +9,10 @@ const Category = require('../models/category')
 const Pagination = require('../util/helpers')
 
 const { ITEMS_PER_PAGE } = require('../util/config').pagination
+
+const { copyFile, deleteFile } = require('../util/fs')
+const DIR_TEMP = path.join(__dirname, '..', 'temp')
+const DIR_UPLOADS = path.join(__dirname, '..', 'uploads')
 
 exports.getItem = async (req, res, next) => {
 	try {
@@ -49,6 +55,14 @@ exports.getEditItem = async (req, res, next) => {
 
 exports.postEditItem = async (req, res, next) => {
 	try {
+		const file = req.file
+		let uploadedImgUrl = null
+		if (file) {
+			// copy image to uploads
+			await copyFile(path.join(DIR_TEMP, file.filename), path.join(DIR_UPLOADS, file.filename))
+			// add proper path to imgUrl
+			uploadedImgUrl = `/${file.filename}`
+		}
 		const categories = await Category.find()
 		const validation = validationResult(req)
 		if (!validation.isEmpty()) {
@@ -67,9 +81,10 @@ exports.postEditItem = async (req, res, next) => {
 			const id = req.params.id
 			const { title, imgUrl, price, desc, category } = req.body
 			const prod = await Product.findById(id)
+			req.fileToDelete = prod.imgUrl
 			if (!prod) throw new Error(`No product found by id: ${id}`)
 			prod.title = title
-			prod.imgUrl = imgUrl
+			prod.imgUrl = uploadedImgUrl || imgUrl
 			prod.price = price
 			prod.desc = desc
 			prod.category = category
@@ -81,6 +96,9 @@ exports.postEditItem = async (req, res, next) => {
 		}
 	} catch (error) {
 		next(error)
+	} finally {
+		if (req.file) deleteFile(path.join(DIR_TEMP, req.file.filename))
+		if (req.fileToDelete) deleteFile(path.join(DIR_UPLOADS, req.fileToDelete))
 	}
 }
 
@@ -133,6 +151,14 @@ exports.getAddNewItem = async (req, res, next) => {
 
 exports.postAddNewItem = async (req, res, next) => {
 	try {
+		const file = req.file
+		let uploadedImgUrl = null
+		if (file) {
+			// copy image to uploads
+			await copyFile(path.join(DIR_TEMP, file.filename), path.join(DIR_UPLOADS, file.filename))
+			// add proper path to imgUrl
+			uploadedImgUrl = `/${file.filename}`
+		}
 		const categories = await Category.find()
 		const validation = validationResult(req)
 		if (!validation.isEmpty()) {
@@ -153,7 +179,7 @@ exports.postAddNewItem = async (req, res, next) => {
 			const { title, imgUrl, price, desc, category } = req.body
 			const product = new Product({
 				title: title,
-				imgUrl: imgUrl,
+				imgUrl: uploadedImgUrl || imgUrl,
 				price: price,
 				desc: desc,
 				category: category
@@ -166,6 +192,8 @@ exports.postAddNewItem = async (req, res, next) => {
 		}
 	} catch (error) {
 		next(error)
+	} finally {
+		if (req.file) deleteFile(path.join(DIR_TEMP, req.file.filename))
 	}
 }
 
